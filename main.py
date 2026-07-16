@@ -293,11 +293,25 @@ def contact():
 #
 #
 def send_email(name, email, phone, message):
-      email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
-      with smtplib.SMTP("smtp.gmail.com") as connection:
+    email_message = f"""Subject:New Message
+
+Name: {name}
+Email: {email}
+Phone: {phone}
+Message:{message}
+"""
+
+    with smtplib.SMTP("smtp.gmail.com", timeout=10) as connection:
         connection.starttls()
-        connection.login(os.environ.get("MAIL_ADDRESS"), os.environ.get("MAIL_APP_PW"))
-        connection.sendmail(os.environ.get("MAIL_ADDRESS"), os.environ.get("MAILER"), email_message)
+        connection.login(
+            os.environ.get("MAIL_ADDRESS"),
+            os.environ.get("MAIL_APP_PW")
+        )
+        connection.sendmail(
+            os.environ.get("MAIL_ADDRESS"),
+            os.environ.get("MAILER"),
+            email_message
+        )
 
 
 if __name__ == "__main__":
